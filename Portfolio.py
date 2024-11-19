@@ -44,10 +44,65 @@ class Stock():
         print()
 
 #TODO: Finish portfolio class and link with stocks
-'''
 class Portfolio():
-    def __init__(self, )
-'''
+    def __init__(self, positions, sd, pnl, beta, treynor, sharpe, jensens, stddev,
+                 var, cvar):
+        self.positions = positions
+        self.sd = sd
+        self.pnl = pnl
+        self.beta = beta
+        self.treynor = treynor
+        self.sharpe = sharpe
+        self.jensens = jensens
+        self.stddev = stddev
+        self.var = var
+        self.cvar = cvar
+
+    def getPositions(self):
+        return self.positions
+
+    def getSD(self):
+        return self.sd
+    
+    def getPnL(self):
+        return self.pnl
+
+    def getBeta(self):
+        return self.beta
+
+    def getTreynor(self):
+        return self.treynor
+
+    def getSharpe(self):
+        return self.sharpe
+
+    def getJensens(self):
+        return self.jensens
+
+    def getStdDev(self):
+        return self.stddev
+
+    def getVaR(self):
+        return self.var
+    
+    def getCVaR(self):
+        return self.cvar
+
+    #TODO: finish add
+    def addPosition(self, newStock):
+        return -1
+
+    #TODO
+    def editPosition(self, target):
+        return -1
+
+    #TODO
+    def exitPosition(self, target):
+        return -1
+
+    #TODO: Finish to string method
+    def __str__():
+        print()
 
 def portfolioParse(rawPortfolioArr):
     positions = {}
