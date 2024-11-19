@@ -35,18 +35,22 @@ class Stock():
         self.price += newPrice
         return self.price
 
-    def setSD(self.sd, newSD):
+    def setSD(self, newSD):
         self.sd = newSD
         return self.sd
 
     #TODO: Finish To string method
-    def __str__():
-        print()
+    def __str__(self):
+        print("[", self.ticker, "]:")
+        print("\tAmount:\t", self.amnt)
+        print("\tPrice:\t", self.price)
+        print("\tSettlement:\t", self.sd)
+        print("\tSector:\t", self.sector)
 
 #TODO: Finish portfolio class and link with stocks
 class Portfolio():
-    def __init__(self, positions, sd, pnl, beta, treynor, sharpe, jensens, stddev,
-                 var, cvar):
+    def __init__(self, positions=[], sd=0.0, pnl=0.0, beta=0.0, treynor=0.0,
+                 sharpe=0.0, jensens=0.0, stddev=0.0, var=0.0, cvar=0.0):
         self.positions = positions
         self.sd = sd
         self.pnl = pnl
@@ -60,6 +64,9 @@ class Portfolio():
 
     def getPositions(self):
         return self.positions
+    
+    def getLenth(self):
+        return len(self.positions)
 
     def getSD(self):
         return self.sd
@@ -101,8 +108,13 @@ class Portfolio():
         return -1
 
     #TODO: Finish to string method
-    def __str__():
+    '''
+    def __str__(self):
+        for i in range(len(self.positions)):
+            print("Positions:")
+            print("\t", positions[i])
         print()
+    '''
 
 def portfolioParse(rawPortfolioArr):
     positions = {}
@@ -124,9 +136,7 @@ def main():
                             'Sector']
     print(rawPortfolio)
     rawPortfolioArr = np.asarray(rawPortfolio)
-    currentPortfolio = portfolioParse(rawPortfolioArr)
-    print(currentPortfolio)
-    print(len(currentPortfolio))
+    currentPortfolio = Portfolio(portfolioParse(rawPortfolioArr))
 
 if __name__ == '__main__':
     main()
