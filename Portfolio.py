@@ -7,8 +7,9 @@ import numpy as np
 
 class Stock():
     def __init__(self, ticker, amnt, price, sd, sector):
-        self.amnt = amnt
-        self.price = price
+        self.ticker = ticker
+        self.amnt = int(amnt)
+        self.price = float(price)
         self.sd = sd
         self.sector = sector
 
@@ -41,11 +42,8 @@ class Stock():
 
     #TODO: Finish To string method
     def __str__(self):
-        print("[", self.ticker, "]:")
-        print("\tAmount:\t", self.amnt)
-        print("\tPrice:\t", self.price)
-        print("\tSettlement:\t", self.sd)
-        print("\tSector:\t", self.sector)
+        output = "[" + self.ticker + "]:\n\tAmount:\t" + str(self.amnt) + "\n\tPrice:\t" + str(self.price) + "\n\tSD:\t" + self.sd + "\n\tSector\t" + self.sector
+        return output
 
 #TODO: Finish portfolio class and link with stocks
 class Portfolio():
@@ -108,20 +106,21 @@ class Portfolio():
         return -1
 
     #TODO: Finish to string method
-    '''
     def __str__(self):
+        print("-- Open Portfolio Positions --")
         for i in range(len(self.positions)):
-            print("Positions:")
-            print("\t", positions[i])
-        print()
-    '''
+            print(self.positions[i])
+        return "-- End of Portfolio --"
 
 def portfolioParse(rawPortfolioArr):
-    positions = {}
+    log = {}
     for i in range(len(rawPortfolioArr)):
-        if not(rawPortfolioArr[i][0] in positions.keys()):
+        if not(rawPortfolioArr[i][0] in log.keys()):
             info = rawPortfolioArr[i][1:]
-            positions.update({rawPortfolioArr[i][0]: info})
+            log.update({rawPortfolioArr[i][0]: info})
+    positions = []
+    for k, v in log.items():
+        positions.append(Stock(k, v[0], v[1], v[2], v[4]))
     return positions 
 
 def main():
@@ -137,6 +136,7 @@ def main():
     print(rawPortfolio)
     rawPortfolioArr = np.asarray(rawPortfolio)
     currentPortfolio = Portfolio(portfolioParse(rawPortfolioArr))
+    print(currentPortfolio)
 
 if __name__ == '__main__':
     main()
