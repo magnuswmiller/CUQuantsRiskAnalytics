@@ -138,5 +138,18 @@ def main():
     currentPortfolio = Portfolio(portfolioParse(rawPortfolioArr))
     print(currentPortfolio)
 
-if __name__ == '__main__':
-    main()
+##if __name__ == '__main__':
+##    main()
+
+filePath = input("* Please enter file path for portfolio data: ")
+rawPortfolio = pd.read_csv(filePath, skiprows=1)
+rawPortfolio.columns = ['Ticker',
+                        'Quantity',
+                        'Price',
+                        'DOA',
+                        'Action',
+                        'Sector']
+rawPortfolioArr = np.asarray(rawPortfolio)
+currentPortfolio = Portfolio(portfolioParse(rawPortfolioArr))
+aapl_stock = currentPortfolio.findStockByTicker("AAPL")
+print(aapl_stock)
