@@ -6,10 +6,10 @@ import pandas as pd
 import numpy as np
 
 class Stock():
-    def __init__(self, ticker, amnt, price, sd, sector):
+    def __init__(self, ticker, amnt, cost, sd, sector):
         self.ticker = ticker
         self.amnt = int(amnt)
-        self.price = float(price)
+        self.cost = float(cost)
         self.sd = sd
         self.sector = sector
 
@@ -19,8 +19,8 @@ class Stock():
     def getAmnt(self):
         return self.amnt
 
-    def getPrice(self):
-        return self.price
+    def getCost(self):
+        return self.cost
 
     def getSD(self):
         return self.sd
@@ -32,9 +32,12 @@ class Stock():
         self.amnt += newAmnt
         return self.amnt
 
-    def setPrice(self, newPrice):
-        self.price += newPrice
-        return self.price
+    def setCost(self, newCost, isBuy):
+        if isBuy:
+            self.cost += newCost
+        else:
+            self.cost -= newCost
+        return self.cost
 
     def setSD(self, newSD):
         self.sd = newSD
@@ -42,14 +45,16 @@ class Stock():
 
     #TODO: Finish To string method
     def __str__(self):
-        output = "[" + self.ticker + "]:\n\tAmount:\t" + str(self.amnt) + "\n\tPrice:\t" + str(self.price) + "\n\tSD:\t" + self.sd + "\n\tSector\t" + self.sector
+        output = "[" + self.ticker + "]:\n\tAmount:\t" + str(self.amnt) + "\n\tCost:\t" + str(self.cost) + "\n\tSD:\t" + self.sd + "\n\tSector\t" + self.sector
         return output
 
 #TODO: Finish portfolio class and link with stocks
 class Portfolio():
-    def __init__(self, positions=[], sd=0.0, pnl=0.0, beta=0.0, treynor=0.0,
+    def __init__(self, log={}, positions=[], cash=0.0, sd=0.0, pnl=0.0, beta=0.0, treynor=0.0,
                  sharpe=0.0, jensens=0.0, stddev=0.0, var=0.0, cvar=0.0):
+        self.log = log
         self.positions = positions
+        self.cash = cash
         self.sd = sd
         self.pnl = pnl
         self.beta = beta
@@ -59,6 +64,9 @@ class Portfolio():
         self.stddev = stddev
         self.var = var
         self.cvar = cvar
+
+    def inLog(self, key):
+        return (key in self.log.keys())
 
     def getPositions(self):
         return self.positions
@@ -93,12 +101,13 @@ class Portfolio():
     def getCVaR(self):
         return self.cvar
 
-    #TODO: finish add
-    def addPosition(self, newStock):
+    def addPosition(self, key, value, stock):
+        self.log.update({key: value})
+        self.positions.append(stock)
+
         return -1
 
-    #TODO
-    def editPosition(self, target):
+    def updatePosition(self, ticker, amnt, cost, sd):
         return -1
 
     #TODO
@@ -112,16 +121,19 @@ class Portfolio():
             print(self.positions[i])
         return "-- End of Portfolio --"
 
-def portfolioParse(rawPortfolioArr):
-    log = {}
+def portfolioParse(rawPortfolioArr, portfolio):
     for i in range(len(rawPortfolioArr)):
-        if not(rawPortfolioArr[i][0] in log.keys()):
+        ticker = rawPortfolioArr[i][0]
+        amnt = rawPortfolioArr[i][1]
+        costPS = rawPortfolioArr[i][2]
+        sd = rawPortfolioArr[i][3]
+        sector = rawPortfolioArr[i][4]
+        if not(portfolio.inLog(ticker)):
             info = rawPortfolioArr[i][1:]
-            log.update({rawPortfolioArr[i][0]: info})
-    positions = []
-    for k, v in log.items():
-        positions.append(Stock(k, v[0], v[1], v[2], v[4]))
-    return positions 
+            portfolio.addPosition(ticker, amnt, Stock(ticker, amnt, costPS*amnt, sd, sector))
+        else:
+            portfolio.updatePosition(ticker, amnt, costPS, sd)
+    return -1 
 
 def main():
     filePath = input("* Please enter file path for portfolio data: ")
@@ -129,18 +141,20 @@ def main():
     rawPortfolio = pd.read_csv(filePath, skiprows=1)
     rawPortfolio.columns = ['Ticker',
                             'Quantity',
-                            'Price',
+                            'Cost PS',
                             'DOA',
                             'Action',
                             'Sector']
     print(rawPortfolio)
     rawPortfolioArr = np.asarray(rawPortfolio)
-    currentPortfolio = Portfolio(portfolioParse(rawPortfolioArr))
+    currentPortfolio = Portfolio()
+    portfolioParse(rawPortfolioArr, currentPortfolio)
     print(currentPortfolio)
 
-##if __name__ == '__main__':
-##    main()
+if __name__ == '__main__':
+    main()
 
+'''
 filePath = input("* Please enter file path for portfolio data: ")
 rawPortfolio = pd.read_csv(filePath, skiprows=1)
 rawPortfolio.columns = ['Ticker',
@@ -153,3 +167,4 @@ rawPortfolioArr = np.asarray(rawPortfolio)
 currentPortfolio = Portfolio(portfolioParse(rawPortfolioArr))
 aapl_stock = currentPortfolio.findStockByTicker("AAPL")
 print(aapl_stock)
+'''
