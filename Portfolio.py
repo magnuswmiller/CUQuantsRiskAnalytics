@@ -7,19 +7,15 @@ import numpy as np
 import yfinance as yf
 
 class Stock():
-    def __init__(self, ticker, amnt, cost, sd, sector):
+    def __init__(self, ticker, amnt, cost, sd, date, sector):
         self.ticker = ticker
         self.amnt = int(amnt)
         self.cost = float(cost)
         self.sd = sd
         self.sector = sector
         self.yfTicker = yf.Ticker(self.ticker)
-        self.history = self.yfTicker.history()
-        #self.currentPrice = self.yfTicker.info['currentPrice']
-        #print(type(self.history['Close'].tail(1).to_list()))
-        #print(self.history['Close'].tail(1).to_list())
+        self.history = self.yfTicker.history(start=sd, end=date)
         self.currentPrice = self.history['Close'].tail(1).to_list()
-        print(self.currentPrice[0])
 
 
     def getTicker(self):
@@ -56,7 +52,7 @@ class Stock():
 
 #TODO: Finish portfolio class and link with stocks
 class Portfolio():
-    def __init__(self, log={}, positions=[], cash=0.0, sd=0.0, pnl=0.0, beta=0.0, treynor=0.0,
+    def __init__(self, date, log={}, positions=[], cash=0.0, sd=0.0, pnl=0.0, beta=0.0, treynor=0.0,
                  sharpe=0.0, jensens=0.0, stddev=0.0, var=0.0, cvar=0.0):
         self.log = log
         self.positions = positions
@@ -163,7 +159,7 @@ class Portfolio():
             print(self.positions[i])
         return "-- End of Portfolio --"
 
-def portfolioParse(rawPortfolioArr, portfolio):
+def portfolioParse(rawPortfolioArr, portfolio, date):
     for i in range(len(rawPortfolioArr)):
         ticker = rawPortfolioArr[i][0]
         amnt = rawPortfolioArr[i][1]
@@ -177,13 +173,16 @@ def portfolioParse(rawPortfolioArr, portfolio):
             isBuy = False
         if not(portfolio.inLog(ticker)):
             info = rawPortfolioArr[i][1:]
-            portfolio.addPosition(ticker, amnt, Stock(ticker, amnt, costPS*amnt, sd, sector))
+            print("** Adding position to portfolio...")
+            portfolio.addPosition(ticker, amnt, Stock(ticker, amnt, costPS*amnt, sd, date, sector))
         else:
+            print("** Updating position in portfolio...")
             portfolio.updatePosition(ticker, amnt, costPS, sd, isBuy)
     return -1 
 
 def main():
     filePath = input("* Please enter file path for portfolio data: ")
+    date = input("* Please enter today's date (yyyy-mm-dd): ")
     print("* Loading data from file...")
     rawPortfolio = pd.read_csv(filePath, skiprows=1)
     rawPortfolio.columns = ['Ticker',
@@ -194,10 +193,12 @@ def main():
                             'Sector']
     print(rawPortfolio)
     rawPortfolioArr = np.asarray(rawPortfolio)
-    currentPortfolio = Portfolio()
-    portfolioParse(rawPortfolioArr, currentPortfolio)
+    currentPortfolio = Portfolio(date)
+    print("* Parsing data...")
+    portfolioParse(rawPortfolioArr, currentPortfolio, date)
+    print("* Data parsing complete.")
+    print("* Printing complete portfolio...")
     print(currentPortfolio)
-    print(currentPortfolio.getCash())
 
 if __name__ == '__main__':
     main()
