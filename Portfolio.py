@@ -52,11 +52,12 @@ class Stock():
 
 #TODO: Finish portfolio class and link with stocks
 class Portfolio():
-    def __init__(self, date, log={}, positions=[], cash=0.0, sd=0.0, pnl=0.0, beta=0.0, treynor=0.0,
+    def __init__(self, date, cash=0.0, log={}, positions=[], sd=0.0, pnl=0.0, beta=0.0, treynor=0.0,
                  sharpe=0.0, jensens=0.0, stddev=0.0, var=0.0, cvar=0.0):
+        self.date = date
+        self.cash = cash
         self.log = log
         self.positions = positions
-        self.cash = cash
         self.sd = sd
         self.pnl = pnl
         self.beta = beta
@@ -183,6 +184,7 @@ def portfolioParse(rawPortfolioArr, portfolio, date):
 def main():
     filePath = input("* Please enter file path for portfolio data: ")
     date = input("* Please enter today's date (yyyy-mm-dd): ")
+    cash = float(input("* Please enter today's cash on hand: "))
     print("* Loading data from file...")
     rawPortfolio = pd.read_csv(filePath, skiprows=1)
     rawPortfolio.columns = ['Ticker',
@@ -193,7 +195,7 @@ def main():
                             'Sector']
     print(rawPortfolio)
     rawPortfolioArr = np.asarray(rawPortfolio)
-    currentPortfolio = Portfolio(date)
+    currentPortfolio = Portfolio(date, cash)
     print("* Parsing data...")
     portfolioParse(rawPortfolioArr, currentPortfolio, date)
     print("* Data parsing complete.")
