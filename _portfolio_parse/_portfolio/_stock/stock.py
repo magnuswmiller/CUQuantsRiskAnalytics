@@ -1,3 +1,9 @@
+# Stock class object
+
+# Importing Libraries
+import numpy as np
+import pandas as pd
+import yfinance as yf
 class Stock():
     def __init__(self, ticker, amnt, cost, sd, date, sector):
         self.ticker = ticker

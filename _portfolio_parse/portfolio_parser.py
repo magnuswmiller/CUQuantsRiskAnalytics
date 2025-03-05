@@ -1,3 +1,11 @@
+# Parser object class
+
+# importing libraries
+import pandas as pd
+import numpy as np
+from _portfolio_parse._portfolio import Portfolio
+from _portfolio_parse._portfolio._stock import Stock
+
 class Portfolio_Parse():
     def __init__(self, filePath, date, cash):
         self.filePath = filePath

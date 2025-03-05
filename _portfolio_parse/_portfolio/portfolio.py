@@ -1,4 +1,7 @@
 #TODO: Finish portfolio class and link with stocks
+import numpy as np
+import pandas as pd
+
 class Portfolio():
     def __init__(self, date, cash=0.0, log={}, positions=[], sd=0.0, pnl=0.0, beta=0.0, treynor=0.0,
                  sharpe=0.0, jensens=0.0, stddev=0.0, var=0.0, cvar=0.0):
