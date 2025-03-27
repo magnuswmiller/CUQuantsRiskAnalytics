@@ -1,4 +1,20 @@
 # Driver Code
+'''
+File handles driving the risk calculator.
+Running driver requirements:
+    - file path for portfolio trade csv
+    - current date in yyyy-mm-dd format
+    - amount of current cash on hand
+TODO:
+    - compile output to pdf file
+        - include major metrics
+            - PnL
+            - sharpe
+            - var
+            - cvar
+            - etc
+    - include handling user request for different metrics
+'''
 
 # Importing Libraries
 import numpy as np
