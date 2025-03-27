@@ -16,7 +16,12 @@ While being developed, outside users can fork the project to develop for their o
 This project is comprised of four parts: (1) driver(), (2) Portfolio_Parser(), (3) Portfolio(), and (4) Stock().
 
 - **driver():**
-    
+    This file serves as a handler for the calculator. Currently requests user input for prtfolio history csv, current date, and cash on hand which it passes to the parser. These values can be hard-coded instead for other use cases.
+    The driver requires the use of the **Portfolio_Parser()**, **Portfolio()**, and **Stock()** classes to work properly.
+    If implementing this project into other frameworks, please use the current version of this file to serve as a guide for its use.
+- **Portfolio_Parser():**
+- **Portfolio():**
+- **Stock():**
 
 ---
 ## User Guide:
