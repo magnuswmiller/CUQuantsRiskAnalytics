@@ -6,10 +6,10 @@ While being developed, outside users can fork the project to develop for their o
 ---
 ## Requirements:
 - Python (v3.12+)
-- Numpy (v)
-- Pandas (v)
-- datetime (v)
-- Yahoo Finance (v)
+- Numpy (v2.2.4)
+- Pandas (v2.2.3)
+- datetime (Default)
+- Yahoo Finance (v0.2.55)
 
 ---
 ## Project Structure:
