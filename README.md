@@ -36,7 +36,7 @@ The overall data pipeline is summarized below:
 
 ---
 ## Version 0.0
-# Release updates
+### Release updates
 - v0.0 release holds the barebones skeleton of the project. Contains all of the base essentials for development.
 - Includes _yahoo finance_ data and no calculations included (will be developed soon)
 - No user input or handling for specific calculations
